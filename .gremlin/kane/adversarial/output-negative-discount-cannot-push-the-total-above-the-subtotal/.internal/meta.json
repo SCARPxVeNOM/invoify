@@ -1,0 +1,18 @@
+{
+  "commit_id": "52c42501-2261-49b0-b772-6521aa13aa0f",
+  "test_id": "ea499fc8-4b1a-4a93-a558-a3b170715944",
+  "testcase_id": "01M7YW6EAGMH2PDJRKAJDEQNZM",
+  "project_id": "01M7Q1C971BFK2HDPEYWC1WGRX",
+  "folder_id": "01M7Q1C9YNWWKDETCT84NYQFG4",
+  "org_id": "3439031",
+  "session_name": "negative-discount-cannot-push-the-total-above-the-subtotal",
+  "executions": [
+    {
+      "execution_id": "83c3e9cd-9c7b-43b4-9fc2-198d23c557ec",
+      "run_kind": "author",
+      "status": "failed",
+      "valid": true,
+      "at": "2026-11-21T11:03:23.566Z"
+    }
+  ]
+}

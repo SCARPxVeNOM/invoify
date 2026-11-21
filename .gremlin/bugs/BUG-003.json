@@ -1,0 +1,35 @@
+{
+  "id": "BUG-003",
+  "title": "Bill To Email rejects a valid 32-character address",
+  "origin": "breaker",
+  "status": "candidate",
+  "severity": "high",
+  "confidence": 0.95,
+  "flowId": "adversarial/a-valid-client-email-longer-than-30-characters-is-accepted",
+  "attack": "input.long-valid-email",
+  "tags": [
+    "from-and-to",
+    "validation",
+    "input-abuse"
+  ],
+  "failingStep": "Check the expected outcome",
+  "reason": "Final verification failed: \"no error message is shown under the Bill To Email field\"",
+  "verdict": {
+    "confirmed": true,
+    "family": "application_issue",
+    "category": "validation_defect",
+    "severity": "major",
+    "confidence": 0.95,
+    "title": "Bill To Email rejects a valid 32-character address",
+    "oneLiner": "The requested Bill To Email remains in the field, but the form incorrectly shows an error beneath it.",
+    "rootCause": "The form applies a 30-character limit to the Bill To Email field. The requested valid email address is 32 characters long, so the form shows an error even though the address is valid.",
+    "suggestion": "Update the Bill To Email validation to allow standard valid email-address lengths, then rerun the check with accounts-receivable@example.test."
+  },
+  "runs": [
+    "RUN-20261121-164009-ad6076"
+  ],
+  "attempts": [],
+  "createdAt": "2026-11-21T11:12:29.304Z",
+  "updatedAt": "2026-11-21T11:12:29.304Z",
+  "credits": 44.87
+}
