@@ -1,0 +1,34 @@
+{
+  "id": "BUG-001",
+  "title": "Large line-item total crashes price formatter",
+  "origin": "breaker",
+  "status": "candidate",
+  "severity": "high",
+  "confidence": 0.99,
+  "flowId": "adversarial/very-large-line-item-total-does-not-crash-the-invoice-form",
+  "attack": "input.huge-number-total-in-words",
+  "tags": [
+    "line-items",
+    "input-abuse"
+  ],
+  "failingStep": "Check the expected outcome",
+  "reason": "Checkpoint assertion failed: \"the Line Items form is still on screen with the Name, Quantity and Rate boxes visible\"",
+  "verdict": {
+    "confirmed": true,
+    "family": "application_issue",
+    "category": "script_error",
+    "severity": "major",
+    "confidence": 0.99,
+    "title": "Large line-item total crashes price formatter",
+    "oneLiner": "The Line Items screen crashed instead of showing the requested total of 10000000000000000.00 USD.",
+    "rootCause": "The app tries to process a total that is too large for its number formatter, causing a runtime error and replacing the form with an error screen.",
+    "suggestion": "Update the total/price formatting path to support this value without converting it to an unsafe JavaScript number, then verify the Line Items form remains visible and shows 10000000000000000.00 USD."
+  },
+  "runs": [
+    "RUN-20261121-162325-b889e8"
+  ],
+  "attempts": [],
+  "createdAt": "2026-11-21T10:56:35.784Z",
+  "updatedAt": "2026-11-21T11:38:10.425Z",
+  "credits": 73.98
+}

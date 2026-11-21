@@ -137,7 +137,10 @@ const PaymentInformationSchema = z.object({
 });
 
 const DiscountDetailsSchema = z.object({
-    amount: fieldValidators.stringToNumberWithMax,
+    // A negative discount would increase the total
+    amount: fieldValidators.stringToNumberWithMax.nonnegative({
+        message: "Discount cannot be negative",
+    }),
     amountType: fieldValidators.string,
 });
 
