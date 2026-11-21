@@ -1,0 +1,18 @@
+{
+  "commit_id": "b262d4a5-3517-45b7-9c85-9310fd2181bb",
+  "test_id": "4a34be0b-9ba2-450d-8188-7d07557ce9a4",
+  "testcase_id": "01M7YXRMJWENN8VNNDC7B838DR",
+  "project_id": "01M7Q1C971BFK2HDPEYWC1WGRX",
+  "folder_id": "01M7Q1C9YNWWKDETCT84NYQFG4",
+  "org_id": "3439031",
+  "session_name": "a-negative-discount-never-pushes-the-total-amount-above-the",
+  "executions": [
+    {
+      "execution_id": "b5920fb8-3bad-45aa-be10-d8bc8ff23da9",
+      "run_kind": "author",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-11-21T11:37:22.988Z"
+    }
+  ]
+}

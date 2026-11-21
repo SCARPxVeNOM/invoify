@@ -42,6 +42,35 @@ const formatNumberWithCommas = (number: number) => {
     return currencyDetails || null;
 };
 
+const QUADRILLION = 10n ** 15n;
+
+/**
+ * Turns an integer of any size into words.
+ *
+ * number-to-words throws for anything beyond Number.MAX_SAFE_INTEGER
+ * (about nine quadrillion), so larger values are spelled out a quadrillion
+ * at a time and each safe-sized chunk is handed to the library.
+ *
+ * @param {bigint} value - Integer to convert
+ * @returns {string} Integer in words
+ */
+const integerToWords = (value: bigint): string => {
+    if (value < 0n) {
+        return `minus ${integerToWords(-value)}`;
+    }
+
+    if (value < QUADRILLION) {
+        return numberToWords.toWords(Number(value));
+    }
+
+    const quadrillions = `${integerToWords(value / QUADRILLION)} quadrillion`;
+    const remainder = value % QUADRILLION;
+
+    return remainder > 0n
+        ? `${quadrillions}, ${numberToWords.toWords(Number(remainder))}`
+        : quadrillions;
+};
+
 
 /**
  * Turns a number into words for invoices
@@ -50,6 +79,11 @@ const formatNumberWithCommas = (number: number) => {
  * @returns {string} Number in words
  */
 const formatPriceToString = (price: number, currency: string): string => {
+    // NaN and Infinity have no spelling; they can't be split into parts below
+    if (!Number.isFinite(price)) {
+        return "";
+    }
+
     // Initialize variables
     let decimals : number;
     let beforeDecimal: string | null = null;
@@ -79,8 +113,7 @@ const formatPriceToString = (price: number, currency: string): string => {
     const fractionalPart = Math.round((roundedPrice - integerPart) * fractionalMultiplier);
 
     // Convert the integer part to words with a capitalized first letter
-    const integerPartInWords = numberToWords
-        .toWords(integerPart)
+    const integerPartInWords = integerToWords(BigInt(integerPart))
         .replace(/^\w/, (c) => c.toUpperCase());
 
     // Convert fractional part to words
