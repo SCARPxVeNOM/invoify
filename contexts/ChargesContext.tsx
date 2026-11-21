@@ -187,11 +187,16 @@ export const ChargesContextProvider = ({ children }: ChargesContextProps) => {
         let total: number = totalSum;
 
         if (!isNaN(discountAmount)) {
+            // A discount only ever lowers the total. Subtracting a negative
+            // one would raise it above the subtotal, so it is not applied;
+            // the schema rejects the value itself.
+            const appliedDiscount: number = Math.max(discountAmount, 0);
+
             if (discountType == "amount") {
-                total -= discountAmount;
+                total -= appliedDiscount;
                 discountAmountType = "amount";
             } else {
-                total -= total * (discountAmount / 100);
+                total -= total * (appliedDiscount / 100);
                 discountAmountType = "percentage";
             }
             setValue("details.discountDetails.amount", discountAmount);

@@ -1,0 +1,62 @@
+{
+  "id": "BUG-004",
+  "title": "negative discount never pushes the Total Amount above the Subtotal",
+  "origin": "capture",
+  "status": "fixed",
+  "severity": "high",
+  "confidence": 0.98,
+  "flowId": "regression/a-negative-discount-never-pushes-the-total-amount-above-the",
+  "tags": [
+    "summary",
+    "charges",
+    "discount"
+  ],
+  "report": {
+    "source": "file",
+    "ref": "/private/tmp/claude-501/-Users-mac-Desktop-gremlin/a77b8aec-ddeb-4487-b031-716fb14fcc03/scratchpad/neg-discount.txt",
+    "text": "On the invoice form, I added a line item with quantity 2 and rate 100, so the subtotal is 200.00 USD.\nThen on the Summary step I turned on Discount and typed -50 as the discount amount.\nThe total went UP to 250.00 USD. A discount should never make the invoice more expensive: a negative discount should be rejected, or at least the total should not exceed the subtotal.\n"
+  },
+  "failingStep": "Check the expected outcome",
+  "reason": "Final verification failed: \"In the Summary form, the Total Amount row shows 200.00 USD or less, and does not show 250.00 USD.\"",
+  "verdict": {
+    "confirmed": true,
+    "family": "application_issue",
+    "category": "ui_data_defect",
+    "severity": "major",
+    "confidence": 0.98,
+    "title": "Negative discount increases invoice total",
+    "oneLiner": "The Summary form shows a 250.00 USD total even though the subtotal is 200.00 USD and a -50 USD discount is entered.",
+    "rootCause": "The form is applying the negative discount in the wrong direction, adding 50 USD to the subtotal instead of reducing it.",
+    "suggestion": "Correct the discount calculation so a -50 USD discount reduces a 200.00 USD subtotal to 150.00 USD, then add a regression test for negative discount values."
+  },
+  "runs": [
+    "RUN-20261121-170218-dcbf0b",
+    "RUN-20261121-170625-a8812c"
+  ],
+  "attempts": [
+    {
+      "n": 1,
+      "at": "2026-11-21T11:35:12.823Z",
+      "agent": "claude-code",
+      "promptFile": ".gremlin/bugs/BUG-004/attempt-1.md",
+      "changedFiles": [
+        "contexts/ChargesContext.tsx",
+        "lib/schemas.ts",
+        "tsconfig.tsbuildinfo"
+      ],
+      "outsideArea": [],
+      "blocked": [],
+      "result": "passed",
+      "durationS": 70.4,
+      "agentSummary": "I fixed it so a negative discount no longer raises the total. With your example (subtotal 200.00 USD, discount -50) the Summary should now show a Total Amount of 200.00 USD. The type check passes, but I haven't run the app, Gremlin or Kane. Gremlin's re-run of the flow will confirm it.\n\n**Root cause:** `calculateTotal` in `contexts/ChargesContext.tsx` did `total -= discountAmount` without checking the sign, so subtracting -50 added 50. Nothing else stopped it: the discount schema in `lib/schemas.ts` had no minimum, and the input's `min=\"0\"` is only a browser hint.\n\n**What I changed:**\n- `calculateTotal` now uses `Math.max(discountAmount, 0)`, so a negative discount is never applied, in fixed-amount or percentage mode.\n- The discount `amount` in the schema now rejects negative values with the message \"Discount cannot be negative\". The wizard's Summary step and invoice generation will flag a negative discount as invalid.\n\nThe -50 stays in the box rather than resetting to 0, so the error can show next to it. Until it's corrected, the live invoice preview will still show a \"- -50.00\" discount row, though its total stays at 200.00.",
+      "runId": "RUN-20261121-170625-a8812c",
+      "relatedRuns": [
+        "RUN-20261121-170738-9ee061"
+      ]
+    }
+  ],
+  "createdAt": "2026-11-21T11:35:00.697Z",
+  "updatedAt": "2026-11-21T11:38:04.596Z",
+  "credits": 47.58,
+  "fixedAt": "2026-11-21T11:38:04.596Z"
+}
