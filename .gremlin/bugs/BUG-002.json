@@ -1,0 +1,36 @@
+{
+  "id": "BUG-002",
+  "title": "Price formatting crashes on unsafe numeric input",
+  "origin": "breaker",
+  "status": "rejected",
+  "severity": "high",
+  "confidence": 0.99,
+  "flowId": "adversarial/a-very-large-line-total-does-not-crash-the-invoice-form",
+  "attack": "input.huge-line-total",
+  "tags": [
+    "line-items",
+    "totals",
+    "input-abuse"
+  ],
+  "failingStep": "Step 5: Click the 'Summary' step in the progress bar",
+  "reason": "The current page shows a client-side application error and contains no Summary progress-bar step.",
+  "verdict": {
+    "confirmed": true,
+    "family": "application_issue",
+    "category": "script_error",
+    "severity": "major",
+    "confidence": 0.99,
+    "title": "Price formatting crashes on unsafe numeric input",
+    "oneLiner": "The page crashes before the Summary step can be shown, so the requested progress-bar action cannot be completed.",
+    "rootCause": "The app tried to turn a number that is too large or too small into a displayed price, and it stopped the whole page instead of handling that value safely.",
+    "suggestion": "Fix the price-formatting path to validate or safely handle out-of-range values, and keep the checkout progress bar available if one value cannot be displayed."
+  },
+  "runs": [
+    "RUN-20261121-163731-925382"
+  ],
+  "attempts": [],
+  "createdAt": "2026-11-21T11:10:09.286Z",
+  "updatedAt": "2026-11-21T11:26:33.735Z",
+  "credits": 49.95,
+  "rejectedBecause": "Duplicate of BUG-001: the same crash in the price formatter when a line total exceeds JavaScript's safe integer range, reached the same way (huge rate × quantity)."
+}

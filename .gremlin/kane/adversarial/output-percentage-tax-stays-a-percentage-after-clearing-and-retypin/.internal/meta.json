@@ -1,0 +1,25 @@
+{
+  "test_id": "9ae3ef8a-c5d4-4f64-93e1-c3dda24c5045",
+  "project_id": "01M7Q1C971BFK2HDPEYWC1WGRX",
+  "folder_id": "01M7Q1C9YNWWKDETCT84NYQFG4",
+  "org_id": "3439031",
+  "session_name": "percentage-tax-stays-a-percentage-after-clearing-and-retypin",
+  "commit_id": "a0cec241-cae1-4c7c-a1c4-04f18bbc3be0",
+  "testcase_id": "01M7YW0HG6N9N6MREYV9RFV3TA",
+  "executions": [
+    {
+      "execution_id": "4940b21e-f02b-4819-a9a7-97917568a971",
+      "run_kind": "author",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-11-21T10:59:22.463Z"
+    },
+    {
+      "execution_id": "924152fa-5cff-4a01-8d8a-de30dcaf636f",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-11-21T11:37:59.064Z"
+    }
+  ]
+}

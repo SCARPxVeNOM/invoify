@@ -1,0 +1,25 @@
+{
+  "commit_id": "06766eee-0a18-481f-954b-358ef704c8fc",
+  "test_id": "15ddc83a-22e3-4ffb-b44e-7322ed30b1d1",
+  "testcase_id": "01M7YWSB67C6THYXZZY91FX0GJ",
+  "project_id": "01M7Q1C971BFK2HDPEYWC1WGRX",
+  "folder_id": "01M7Q1C9YNWWKDETCT84NYQFG4",
+  "org_id": "3439031",
+  "session_name": "a-valid-client-email-longer-than-30-characters-is-accepted",
+  "executions": [
+    {
+      "execution_id": "7bc84d76-f7ea-40ae-8ae1-044c0f4bc4bc",
+      "run_kind": "author",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-11-21T18:52:17.480Z"
+    },
+    {
+      "execution_id": "089ece1d-f4a8-4a35-9c59-3a7980e0408e",
+      "run_kind": "replay",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-11-21T18:57:39.856Z"
+    }
+  ]
+}
