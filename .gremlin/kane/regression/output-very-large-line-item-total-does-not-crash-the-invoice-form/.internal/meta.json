@@ -1,0 +1,18 @@
+{
+  "commit_id": "f60f0baf-d56a-411c-a550-0d80afa68eb5",
+  "test_id": "0b6af67b-a1f7-46e8-9024-09cd399db009",
+  "testcase_id": "01M7ZQ7Z7DR8CMXSFR2VHDYPJB",
+  "project_id": "01M7Q1C971BFK2HDPEYWC1WGRX",
+  "folder_id": "01M7Q1C9YNWWKDETCT84NYQFG4",
+  "org_id": "3439031",
+  "session_name": "very-large-line-item-total-does-not-crash-the-invoice-form",
+  "executions": [
+    {
+      "execution_id": "846da24c-571f-4de7-958b-e71685061e3b",
+      "run_kind": "author",
+      "status": "passed",
+      "valid": true,
+      "at": "2026-11-21T18:58:34.618Z"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "id": "BUG-003",
+  "title": "Bill To Email rejects a valid 32-character address",
+  "origin": "breaker",
+  "status": "fixed",
+  "severity": "high",
+  "confidence": 0.95,
+  "flowId": "regression/a-valid-client-email-longer-than-30-characters-is-accepted",
+  "attack": "input.long-valid-email",
+  "tags": [
+    "from-and-to",
+    "validation",
+    "input-abuse"
+  ],
+  "failingStep": "Check the expected outcome",
+  "reason": "Final verification failed: \"no error message is shown under the Bill To Email field\"",
+  "verdict": {
+    "confirmed": true,
+    "family": "application_issue",
+    "category": "validation_defect",
+    "severity": "major",
+    "confidence": 0.95,
+    "title": "Bill To Email rejects a valid 32-character address",
+    "oneLiner": "The requested Bill To Email remains in the field, but the form incorrectly shows an error beneath it.",
+    "rootCause": "The form applies a 30-character limit to the Bill To Email field. The requested valid email address is 32 characters long, so the form shows an error even though the address is valid.",
+    "suggestion": "Update the Bill To Email validation to allow standard valid email-address lengths, then rerun the check with accounts-receivable@example.test."
+  },
+  "runs": [
+    "RUN-20261121-164009-ad6076",
+    "RUN-20261122-002131-b71010",
+    "RUN-20261122-002711-fe0ab8",
+    "RUN-20261122-004303-a4b647"
+  ],
+  "attempts": [
+    {
+      "n": 1,
+      "at": "2026-11-21T18:51:04.857Z",
+      "agent": "claude-code",
+      "promptFile": ".gremlin/bugs/BUG-003/attempt-1.md",
+      "changedFiles": [
+        "lib/schemas.ts"
+      ],
+      "outsideArea": [],
+      "blocked": [],
+      "result": "failed",
+      "durationS": 24.6,
+      "agentSummary": "I've made the fix. The only other places that mention the old message are Gremlin's own files, which I haven't touched.\n\nThe root cause was the shared `email` validator in `lib/schemas.ts:47`. It capped addresses at 30 characters with `.max(30)`, so a valid 32-character address like `accounts-receivable@example.test` showed a length error. Both Bill From and Bill To use this validator. I raised the cap to 254, the longest address the email standard (RFC 5321) allows, and updated the error message to match. The format check and the 5-character minimum are unchanged.\n\nI haven't run Gremlin, Kane or the app, as this session's rules say; Gremlin will re-run the flow in a browser to check the fix.",
+      "runId": "RUN-20261122-002131-b71010",
+      "relatedRuns": [
+        "RUN-20261122-002231-c99586"
+      ]
+    },
+    {
+      "n": 2,
+      "at": "2026-11-21T18:55:32.791Z",
+      "agent": "claude-code",
+      "promptFile": ".gremlin/bugs/BUG-003/attempt-2.md",
+      "changedFiles": [
+        "lib/helpers.ts",
+        "tsconfig.tsbuildinfo"
+      ],
+      "outsideArea": [],
+      "blocked": [],
+      "result": "passed",
+      "durationS": 96,
+      "agentSummary": "I fixed the crash in `lib/helpers.ts`, but I haven't seen it work: the type check passed with no errors in that file, my quick Node check of the new logic needed approval and didn't run, and as instructed I didn't run the app, Gremlin or Kane.\n\nThe page crashed because a total of 1,000,000,000 × 10,000,000 = 1e16 is above `Number.MAX_SAFE_INTEGER`. `formatPriceToString` (called from `calculateTotal` in `contexts/ChargesContext.tsx`) passed that total to `number-to-words`' `toWords()`, which threw a RangeError inside a `useEffect` and took the whole form down. I added an `integerToWords` helper that uses BigInt to spell out amounts above that limit one three-digit group at a time, so 1e16 becomes \"Ten quadrillion\". `formatPriceToString` now returns blank words instead of throwing when an amount is infinite or above about 10^36, too big to spell out.\n\nThe bug title is about the email field, but this flow tests the large-total crash, so that's what I fixed. The email-length change from attempt 1 is still in `lib/schemas.ts`; I left it alone.",
+      "runId": "RUN-20261122-002711-fe0ab8",
+      "relatedRuns": [
+        "RUN-20261122-002745-5393b8"
+      ]
+    }
+  ],
+  "createdAt": "2026-11-21T11:12:29.304Z",
+  "updatedAt": "2026-11-21T19:14:26.542Z",
+  "credits": 162.31,
+  "fixedAt": "2026-11-21T19:14:26.537Z"
+}
